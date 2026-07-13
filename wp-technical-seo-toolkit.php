@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WP Technical SEO Toolkit
- * Description: Ferramentas de SEO técnico para WordPress — redirecionamentos, links quebrados, dados estruturados, canonical e robots.
+ * Description: Ferramentas de SEO tecnico para WordPress: redirecionamentos, links quebrados, dados estruturados, canonical e robots.
  * Version: 0.1.0
  * Author: Garion Projetos
  * License: GPLv2 or later
