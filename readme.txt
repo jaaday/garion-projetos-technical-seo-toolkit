@@ -1,4 +1,4 @@
-=== Technical SEO Toolkit ===
+=== Garion Projetos Technical SEO Toolkit ===
 Contributors: garionprojetos
 Tags: seo, redirects, structured-data, canonical, robots
 Requires at least: 6.0

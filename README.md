@@ -21,8 +21,8 @@ Plugin WordPress próprio para SEO técnico, indexação e rastreabilidade.
 ## Estrutura
 
 ```
-technical-seo-toolkit/
-├── technical-seo-toolkit.php      # arquivo principal do plugin
+garion-projetos-technical-seo-toolkit/
+├── garion-projetos-technical-seo-toolkit.php   # arquivo principal do plugin
 ├── includes/                      # classes e lógica
 ├── admin/                         # tela administrativa
 └── assets/                        # CSS/JS

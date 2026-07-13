@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: Technical SEO Toolkit
+ * Plugin Name: Garion Projetos Technical SEO Toolkit
  * Description: Technical SEO tools for WordPress: redirects, broken link detection, structured data, canonical control and robots configuration.
  * Version: 0.1.0
  * Author: Garion Projetos
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: technical-seo-toolkit
+ * Text Domain: garion-projetos-technical-seo-toolkit
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
