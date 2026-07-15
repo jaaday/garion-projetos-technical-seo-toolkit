@@ -4,7 +4,7 @@ Tags: seo, redirects, structured-data, canonical, robots
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,20 +28,33 @@ This plugin does not send data to external servers. All processing happens local
 
 1. Upload the plugin folder to `/wp-content/plugins/`.
 2. Activate the plugin from the "Plugins" screen.
-3. Configure the options under "Settings > Technical SEO Toolkit".
+3. Open the new "Technical SEO" menu in the admin sidebar to manage redirects, run a broken link scan, view the page audit and configure settings.
 
 == Frequently Asked Questions ==
 
 = Does this plugin send data to external services? =
 
-No. All SEO checks run locally.
+No. All SEO checks run locally. The broken link scanner does contact the URLs found in your own content to check whether they still respond, but this is a normal HTTP check (like a browser visiting a link), not a data submission to a third-party service.
+
+= Where do I manage redirects? =
+
+Under "Technical SEO > Redirects" in the admin sidebar.
+
+= How often does the broken link scan run? =
+
+Automatically every 10 minutes, in small batches, until every published post and page has been checked. You can also trigger an immediate scan from "Technical SEO > Broken Links".
 
 == Changelog ==
+
+= 0.2.0 =
+* Implemented all planned features: redirect management, broken link scanner, structured data (JSON-LD), canonical URL override, meta robots + robots.txt, page audit and REST API endpoints.
+* Added admin screen with Redirects, Broken Links, Page Audit and Settings tabs.
+* Added post-editor metabox for meta description, canonical override and noindex/nofollow.
 
 = 0.1.0 =
 * Initial release.
 
 == Upgrade Notice ==
 
-= 0.1.0 =
-Initial release.
+= 0.2.0 =
+Adds full functionality. Review the new "Technical SEO" admin menu after updating.
