@@ -1,6 +1,8 @@
-# Garion Projetos Technical SEO Toolkit
+# Garion Projetos - Technical SEO Toolkit
 
-Plugin WordPress independente para SEO técnico, auditoria e manutenção, com interoperabilidade opcional com outros plugins de SEO.
+Plugin WordPress independente de SEO técnico, auditoria e manutenção, com interoperabilidade opcional com outros plugins de SEO (Rank Math e Yoast).
+
+**Versão atual:** 0.6.2 · **Requer WordPress:** 6.0+ · **Requer PHP:** 8.1+
 
 ## Autoria e independência
 
@@ -8,44 +10,22 @@ O código deste plugin é uma implementação original da Garion Projetos. O Ran
 
 Nenhum arquivo, classe, função, algoritmo, texto, interface, asset ou trecho de código-fonte do Rank Math foi copiado, adaptado ou redistribuído. Quando o Rank Math está instalado, a comunicação ocorre exclusivamente por hooks públicos e pelas APIs do WordPress. O toolkit não depende do Rank Math e funciona normalmente sem ele.
 
-## Gestão de resultados 0.5.1
-
-- Aba Problemas com busca, filtros, ordenação, paginação e ações de ciclo de vida.
-- Detalhes de conteúdo, problema e auditoria com evidência, origem do dado e orientação de correção.
-- Cálculo explicável com penalidade bruta, penalidade aplicada e limite por categoria persistidos.
-- Comparação, exportação JSON/CSV e consulta de auditorias históricas.
-- Endpoints REST protegidos para auditorias, conteúdos e problemas.
-- Tabelas operacionais ampliadas com último acesso, URL final, rechecagem e itens ignorados.
-## Fundação de auditoria 0.5.0
-
-- Motor extensível com verificações independentes, contexto e resultados normalizados.
-- Pontuação ponderada por severidade, com limite de penalidade por categoria.
-- Auditorias completas ou individuais em lotes retomáveis pelo WP-Cron.
-- Bloqueio contra execuções concorrentes, heartbeat, cancelamento e recuperação após timeout.
-- Histórico persistente de pontuação e ciclo de vida dos problemas.
-- Providers centralizados para Toolkit, WordPress, Rank Math e Yoast SEO.
-- Visão geral administrativa, histórico de execuções e progresso via REST.
-- Retenção configurável e remoção de dados somente mediante consentimento explícito.
-
-Documentação técnica:
-
-- [Arquitetura da Fase 1](docs/phase-1-architecture.md)
-- [Tabelas](docs/database.md)
-- [API REST](docs/rest-api.md)
-- [Hooks públicos](docs/hooks.md)
-- [Testes e diagnóstico](docs/testing.md)
-- [Riscos e roteiro das próximas fases](docs/implementation-roadmap.md)
 ## Principais recursos
 
-- Redirecionamentos 301, 302, 307 e 308, com prevenção de loops e importação/exportação CSV.
-- Monitor de erros 404 com retenção automática de 90 dias.
-- Scanner assíncrono de links quebrados, executado em lotes e iniciado diariamente pelo WP-Cron.
-- Auditoria de páginas e posts com análise de títulos, descrição, imagem destacada, indexação e links quebrados.
-- Sitemap XML próprio quando o módulo de sitemap do Rank Math não está ativo.
-- Canonical, meta description, robots, Open Graph e Twitter Cards com overrides por conteúdo.
-- Schema.org para sites que não utilizam o módulo Schema do Rank Math.
-- Regras adicionais de `robots.txt`.
-- Endpoints REST protegidos por capacidade administrativa.
+- **Redirecionamentos** 301, 302, 307 e 308, com prevenção de loops, contador de acessos atômico e importação/exportação CSV.
+- **Monitor de 404** com retenção automática de 90 dias; pausa automaticamente quando o monitor 404 do Rank Math está ativo.
+- **Scanner de links quebrados** assíncrono, protegido contra SSRF (`wp_safe_remote_head()`/`wp_safe_remote_get()`), executado em pequenos lotes e iniciado diariamente pelo WP-Cron.
+- **Auditoria de SEO on-page** com motor extensível de checks independentes (título, meta description, imagem destacada e indexabilidade, hoje), pontuação ponderada por severidade com limite de penalidade por categoria, e histórico persistente.
+- **Gestão de problemas (Issues)**: busca, filtros, ordenação, paginação, detalhes com evidência e orientação de correção, e ações de ciclo de vida (ignorar/reabrir).
+- **Execuções assíncronas retomáveis** via WP-Cron, com lock contra concorrência, heartbeat, cancelamento e recuperação após timeout.
+- **Sitemap XML** próprio em `/sitemap.xml`, desativado automaticamente quando o módulo de sitemap do Rank Math está ativo.
+- **Schema.org (dados estruturados)** próprio, desativado quando o módulo Schema do Rank Math está ativo.
+- **Canonical, meta description e robots** com overrides por conteúdo, mescláveis com as diretivas do Rank Math.
+- **Open Graph e Twitter Cards** com overrides por conteúdo e preview ao vivo no metabox do editor.
+- **Regras extras de `robots.txt`.**
+- **Exportação** de auditorias e problemas em JSON/CSV.
+- **Endpoints REST** protegidos por capacidade administrativa e nonce.
+- **Traduções completas** do painel administrativo: inglês (padrão), português do Brasil, espanhol, russo e chinês simplificado (283 strings cada), aplicadas automaticamente conforme o idioma do site ou do usuário.
 
 ## Interoperabilidade opcional com Rank Math
 
@@ -63,7 +43,20 @@ Desde a versão 0.4.0, o toolkit detecta o Rank Math e evita saídas duplicadas:
 | Redirecionamentos | Continuam disponíveis; regras do toolkit têm prioridade para os caminhos cadastrados nele. |
 | Links quebrados e auditoria | Permanecem ativos como recursos complementares. |
 
-Os campos do metabox do toolkit continuam editáveis. Quando o Rank Math está ativo, eles funcionam como overrides de frontend e não imprimem um segundo conjunto de tags.
+Os campos do metabox do toolkit continuam editáveis. Quando o Rank Math está ativo, eles funcionam como overrides de frontend e não imprimem um segundo conjunto de tags. Há também um provider dedicado para metadados do **Yoast SEO**, usado pelo motor de auditoria para ler título/descrição já preenchidos por ele.
+
+## Painel administrativo
+
+Menu **Technical SEO** com as seguintes telas:
+
+- **Visão geral** — indicadores de saúde de SEO do site.
+- **Auditorias** — histórico de execuções, progresso, comparação entre auditorias e exportação.
+- **Problemas** — lista consolidada de issues com filtros, detalhes e ações de ciclo de vida.
+- **Conteúdos** — auditoria e problemas por post/página individual.
+- **Redirecionamentos** — CRUD com importação/exportação CSV.
+- **Monitor 404** — hits registrados com referrer e contagem.
+- **Links quebrados** — status do scanner e disparo de varredura manual.
+- **Configurações** — retenção de dados e demais preferências.
 
 ## Segurança e desempenho
 
@@ -73,13 +66,16 @@ Os campos do metabox do toolkit continuam editáveis. Quando o Rank Math está a
 - Resultados antigos são substituídos a cada nova leitura, evitando falsos positivos persistentes.
 - A varredura automática completa inicia uma vez por dia e processa pequenos lotes em segundo plano.
 - Redirecionamentos recusam protocolos não HTTP(S) e loops para a própria URL.
-- Atualizações de versão executam migrações de tabelas automaticamente.
+- Endpoints REST exigem capacidade administrativa e nonce válido.
+- Atualizações de versão executam migrações de tabelas automaticamente (`GPSEO_DB_VERSION`).
+- Retenção configurável e remoção de dados somente mediante consentimento explícito na desinstalação.
+- Este plugin não envia dados do site a serviços externos; o scanner de links quebrados apenas acessa URLs encontradas no próprio conteúdo publicado para verificar a resposta HTTP.
 
 ## Requisitos
 
 - WordPress 6.0 ou superior.
 - PHP 8.1 ou superior.
-- Rank Math é opcional.
+- Rank Math e Yoast SEO são opcionais.
 
 ## Instalação
 
@@ -92,35 +88,40 @@ Os campos do metabox do toolkit continuam editáveis. Quando o Rank Math está a
 
 ```text
 garion-projetos-technical-seo-toolkit/
-├── admin/
-├── assets/
-├── docs/
+├── admin/                      # Telas do painel e metabox do editor
+├── assets/                     # CSS/JS do admin
+├── docs/                       # Documentação técnica
 ├── includes/
 │   ├── audit/
-│   │   └── checks/
-│   └── providers/
-├── tests/
+│   │   └── checks/             # Checks de auditoria (título, descrição, imagem, indexabilidade)
+│   └── providers/               # Providers de metadados (Toolkit, WordPress, Rank Math, Yoast)
+├── languages/                  # Traduções (.po/.mo) e template .pot
+├── tests/                      # Testes PHPUnit
 ├── garion-projetos-technical-seo-toolkit.php
-├── readme.txt
+├── readme.txt                  # readme padrão WordPress.org, com o changelog completo
 └── uninstall.php
 ```
 
-## Versão 0.5.0
+## Documentação técnica
 
-- Motor modular com checks registráveis por filtro público.
-- Pontuação ponderada e normalizada por categoria.
-- Quatro novas tabelas para execuções, resultados, problemas e histórico.
-- Auditoria completa e individual assíncrona, retomável e cancelável.
-- Cursor por ID, heartbeat e lock expirável contra lotes duplicados.
-- Providers centralizados para metadados do toolkit, WordPress, Rank Math e Yoast.
-- Novos endpoints REST administrativos e telas de visão geral/histórico.
-- Retenção configurável e desinstalação com remoção de dados opt-in.
-- Interoperabilidade opcional por meio dos filtros públicos de frontend, Open Graph e sitemap do Rank Math.
-- Supressão automática de tags e sitemaps duplicados.
-- Monitor 404 compatível com o módulo equivalente do Rank Math.
-- Scanner de links protegido contra SSRF e resultados obsoletos.
-- Cron diário em vez de varredura contínua a cada dez minutos.
-- Migrações automáticas de banco após atualizações.
-- Redirecionamentos 307/308, validação de protocolos, prevenção de loops e contador atômico.
-- Schema independente mais completo e válido.
-- Auditoria compatível com `rank_math_robots` e contagem multibyte de títulos.
+- [Arquitetura da Fase 1](docs/phase-1-architecture.md)
+- [Tabelas](docs/database.md)
+- [API REST](docs/rest-api.md)
+- [Hooks públicos](docs/hooks.md)
+- [Testes e diagnóstico](docs/testing.md)
+- [Riscos e roteiro das próximas fases](docs/implementation-roadmap.md)
+
+## Changelog
+
+O histórico completo de versões fica em [`readme.txt`](readme.txt#L76). Destaques recentes:
+
+- **0.6.2** — Padronização final dos comentários `phpcs:ignore` nas queries de escrita do repositório de auditoria.
+- **0.6.1** — Correções de preparo de SQL (`$wpdb->prepare()`) e de posicionamento dos comentários de exceção do PHPCS.
+- **0.6.0** — **Breaking change:** todos os hooks públicos foram renomeados para o prefixo `gpseo_` (antes `garion_technical_seo/...`). Também corrige os últimos erros do WordPress Plugin Check.
+- **0.5.10 – 0.5.5** — Correções de segurança e padrões de código no WordPress Plugin Check (escaping, nonces, comentários de tradutor).
+- **0.5.8** — Traduções completas do admin para pt_BR, es_ES, ru_RU e zh_CN.
+- **0.5.3** — Redesenho do painel administrativo (dashboard, badges, breadcrumbs, tabelas responsivas).
+- **0.5.0 – 0.5.1** — Fundação do motor de auditoria assíncrono e gestão completa de problemas (issues), pontuação explicável e endpoints REST de auditoria.
+- **0.4.0 – 0.4.1** — Interoperabilidade opcional com Rank Math, hardening do scanner de links (SSRF) e migrações automáticas de banco.
+
+> ⚠️ Ao atualizar a partir de uma versão anterior à 0.6.0, ajuste qualquer código próprio que dependa dos hooks antigos `garion_technical_seo/...` para os novos nomes `gpseo_...`.
